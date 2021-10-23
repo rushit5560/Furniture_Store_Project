@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/views/index_view/index_view.dart';
-import 'package:furniture_store/views/onboarding_view/onboarding_view.dart';
 import 'package:get/get.dart';
-
-import 'views/splash_view/splash_view.dart';
+import 'common/application_theme.dart';
 
 
 void main() {
@@ -18,6 +16,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Furniture Store',
       debugShowCheckedModeBanner: false,
+      theme: lightTheme(),
+
       home: IndexView(),
     );
   }

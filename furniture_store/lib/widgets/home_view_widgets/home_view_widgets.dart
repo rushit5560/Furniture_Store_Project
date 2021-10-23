@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:furniture_store/common/custom_color.dart';
 import 'package:furniture_store/controllers/home_view_controller/home_view_controller.dart';
+import 'package:furniture_store/views/product_collection_view/product_collection_view.dart';
 import 'package:get/get.dart';
 
 PreferredSizeWidget appBarModule() {
@@ -141,28 +142,37 @@ class CategoryModule extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          image: AssetImage(
-                              '${homeViewController.categoryList[index].img}'),
-                          fit: BoxFit.cover,
-                        )),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Text(
-                          '${homeViewController.categoryList[index].name}',
-                          style: TextStyle(fontSize: 12),
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(()=>
+                          ProductCollectionView(),
+                        transition: Transition.rightToLeft,
+                        arguments: homeViewController.categoryList[index].name,
+                      );
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                            image: AssetImage(
+                                '${homeViewController.categoryList[index].img}'),
+                            fit: BoxFit.cover,
+                          )),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Text(
+                            '${homeViewController.categoryList[index].name}',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

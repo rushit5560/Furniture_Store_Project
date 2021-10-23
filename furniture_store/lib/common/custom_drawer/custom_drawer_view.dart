@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/common/custom_color.dart';
 import 'package:furniture_store/common/image_url.dart';
+import 'package:furniture_store/views/category_view/category_view.dart';
+import 'package:furniture_store/views/sign_in_view/sign_in_view.dart';
 import 'package:get/get.dart';
 
 class CustomDrawerView extends StatelessWidget {
@@ -101,7 +103,10 @@ class CustomDrawerView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: GestureDetector(
-        onTap: () {print('Category');},
+        onTap: () {
+          Get.back();
+          Get.to(()=> CategoryView());
+          },
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -237,8 +242,8 @@ class CustomDrawerView extends StatelessWidget {
     return Container(
       child: ListTile(
         onTap: () {
-          // Get.back();
-          // Get.to(() => SignInPage());
+          Get.back();
+          Get.to(() => SignInView());
         },
         leading: Icon(Icons.login_outlined),
         title: Text('Login', textScaleFactor: 1.2),

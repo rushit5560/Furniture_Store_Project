@@ -3,6 +3,7 @@ class ImageUrl {
 
   static const splashImg = MainPath + 'splash.jpg';
   static const bannerImg = MainPath + 'banner.png';
+  static const profileImg = MainPath + 'profile.jpg';
 
   static const category1 = MainPath + 'category1.png';
   static const category2 = MainPath + 'category2.png';

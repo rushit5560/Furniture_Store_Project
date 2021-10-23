@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/common/custom_color.dart';
-import 'package:furniture_store/widgets/index_view_widgets/index_view_widgets.dart';
-import 'package:get/get.dart';
+import 'package:furniture_store/views/home_view/home_view.dart';
+import 'package:furniture_store/views/notification_view/notification_view.dart';
+import 'package:furniture_store/views/profile_view/profile_view.dart';
+import 'package:furniture_store/views/search_view/search_view.dart';
+import 'package:furniture_store/views/wishlist_view/wishlist_view.dart';
 
 class IndexView extends StatefulWidget {
   // const IndexView({Key? key}) : super(key: key);
@@ -13,10 +16,19 @@ class IndexView extends StatefulWidget {
 class _IndexViewState extends State<IndexView> {
   int _currentIndex = 0;
 
+  final tabs = [
+    HomeView(),
+    WishlistView(),
+    SearchView(),
+    NotificationView(),
+    ProfileView(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarModule(),
+
+      body: tabs[_currentIndex],
 
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(35)),
@@ -60,10 +72,6 @@ class _IndexViewState extends State<IndexView> {
         ),
       ),
 
-      body: Column(
-        children: [],
-      ),
-      // body: tabs[_currentIndex],
     );
   }
 }

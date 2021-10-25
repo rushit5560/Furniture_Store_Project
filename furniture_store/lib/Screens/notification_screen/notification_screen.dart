@@ -10,7 +10,7 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: commonAppBarModule('Notification'),
+      appBar: commonAppBarModule(title: 'Notification'),
 
       // Import From Notification Screen Widgets File
       body: NotificationListModule(notificationScreenController: notificationScreenController),

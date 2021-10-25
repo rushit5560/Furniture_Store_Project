@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-PreferredSizeWidget commonAppBarModule(String title) {
+PreferredSizeWidget commonAppBarModule({required String title}) {
   return AppBar(
     title: Text('$title'),
     elevation: 0,
@@ -8,6 +8,5 @@ PreferredSizeWidget commonAppBarModule(String title) {
       borderRadius: BorderRadius.only(bottomRight: Radius.circular(45)),
     ),
     centerTitle: true,
-
   );
 }

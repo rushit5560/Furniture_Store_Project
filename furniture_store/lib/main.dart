@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furniture_store/views/index_view/index_view.dart';
+import 'package:furniture_store/Screens/index_screen/index_screen.dart';
 import 'package:get/get.dart';
 import 'common/application_theme.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightTheme(),
 
-      home: IndexView(),
+      home: IndexScreen(),
     );
   }
 }

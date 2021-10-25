@@ -9,23 +9,25 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: profileScreenAppBarModule(),
-      body: Stack(
-        children: [
-          // Import From Profile Screen Widgets File
-          GreenBackgroundModule(),
+      appBar: profileScreenAppBarModule(context),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            // Import From Profile Screen Widgets File
+            GreenBackgroundModule(),
 
-          Container(
-            child: Column(
-              children: [
-                SizedBox(height: Get.height * 0.08),
+            Container(
+              child: Column(
+                children: [
+                  SizedBox(height: Get.height * 0.08),
 
-                // Import From Profile Screen Widgets File
-                UserDetails(),
-              ],
+                  // Import From Profile Screen Widgets File
+                  UserDetails(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

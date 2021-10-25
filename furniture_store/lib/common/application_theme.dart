@@ -13,5 +13,9 @@ ThemeData lightTheme() {
       type: BottomNavigationBarType.fixed,
       selectedItemColor: CustomColor.kLightGreenColor,
     ),
+
+    radioTheme: RadioThemeData(
+      fillColor: MaterialStateColor.resolveWith((states) => CustomColor.kLightGreenColor),
+    ),
   );
 }

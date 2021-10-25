@@ -14,6 +14,11 @@ class ProductCollectionScreen extends StatelessWidget {
     return Scaffold(
 
       appBar: appBarModule('${productCollectionScreenController.categoryName}'),
+
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ProductCollectionListModule(productCollectionScreenController: productCollectionScreenController),
+      ),
     );
   }
 }

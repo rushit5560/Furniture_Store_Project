@@ -14,4 +14,9 @@ class ImageUrl {
   static const product1 = MainPath + 'product1.png';
   static const product2 = MainPath + 'product2.png';
   static const product3 = MainPath + 'product3.png';
+
+  static const cod = MainPath + 'cod.png';
+  static const mastercard = MainPath + 'mastercard.png';
+  static const paypal = MainPath + 'paypal.png';
+  static const visa = MainPath + 'visa.png';
 }

@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:furniture_store/Screens/cart_screen/cart_screen.dart';
 import 'package:furniture_store/Screens/product_collection_screen/product_collection_screen.dart';
 import 'package:furniture_store/common/custom_color.dart';
 import 'package:furniture_store/controllers/home_screen_controller/home_screen_controller.dart';
@@ -17,7 +18,7 @@ PreferredSizeWidget appBarModule() {
     actions: [
       IconButton(
         onPressed: () {
-          print('Clk');
+          Get.to(()=> CartScreen());
         },
         icon: Icon(Icons.shopping_cart_rounded),
       ),

@@ -11,7 +11,7 @@ class CheckOutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: commonAppBarModule(title: 'Checkout'),
+     appBar: commonAppBarModule(title: 'Checkout',index: 0),
 
       body: Column(
         children: [

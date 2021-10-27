@@ -17,5 +17,12 @@ ThemeData lightTheme() {
     radioTheme: RadioThemeData(
       fillColor: MaterialStateColor.resolveWith((states) => CustomColor.kLightGreenColor),
     ),
+
+    tabBarTheme: TabBarTheme(
+      unselectedLabelColor: Colors.black,
+      labelColor: CustomColor.kLightGreenColor,
+      indicatorSize: TabBarIndicatorSize.label,
+      indicator: BoxDecoration(color: Colors.transparent),
+    ),
   );
 }

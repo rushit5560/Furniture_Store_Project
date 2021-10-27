@@ -11,7 +11,7 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: commonAppBarModule(title: 'Cart'),
+      appBar: commonAppBarModule(title: 'Cart',index: 0),
 
       body: Column(
         children: [

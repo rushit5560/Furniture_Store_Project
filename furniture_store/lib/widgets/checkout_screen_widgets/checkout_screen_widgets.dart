@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/Screens/checkout_screen/checkout_screen.dart';
+import 'package:furniture_store/Screens/success_screen/success_screen.dart';
 import 'package:furniture_store/common/custom_color.dart';
 import 'package:furniture_store/controllers/checkout_screen_controller/checkout_screen_controller.dart';
 import 'package:get/get.dart';
@@ -158,7 +159,7 @@ class ProceedButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: GestureDetector(
-        onTap: () => Get.to(()=> CheckOutScreen()),
+        onTap: () => Get.to(()=> SuccessScreen()),
         child: Container(
           color: CustomColor.kLightGreenColor,
           child: Center(

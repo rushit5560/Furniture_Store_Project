@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furniture_store/Screens/cart_screen/cart_screen.dart';
 import 'package:get/get.dart';
 
-PreferredSizeWidget commonAppBarModule({required String title, required int index}) {
+PreferredSizeWidget commonAppBarModule({required String title, int index = 0}) {
   return AppBar(
     title: Text('$title'),
     elevation: 0,

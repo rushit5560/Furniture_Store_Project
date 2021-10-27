@@ -24,9 +24,7 @@ class CheckOutScreen extends StatelessWidget {
 
           ProceedButton(),
           const SizedBox(height: 10),
-
-          ProceedButton(),
-          const SizedBox(height: 10),
+          
         ],
       ),
     );

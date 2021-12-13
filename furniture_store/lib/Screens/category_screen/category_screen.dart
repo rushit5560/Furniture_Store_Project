@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furniture_store/Screens/collection_screen/collection_screen.dart';
+import 'package:furniture_store/Screens/category_collection_screen/category_collection_screen.dart';
 import 'package:furniture_store/common/api_url.dart';
 import 'package:furniture_store/common/common_widgets.dart';
 import 'package:furniture_store/controllers/category_screen_controller/category_screen_controller.dart';
@@ -42,9 +42,12 @@ class CategoryScreen extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Get.to(
-            () => CollectionScreen(),
+            () => CategoryCollectionScreen(),
             transition: Transition.rightToLeft,
-            arguments: categorySingleItem.categoryName,
+            arguments: [
+              categorySingleItem.categoryId,
+              categorySingleItem.categoryName,
+            ],
           );
         },
         child: Row(

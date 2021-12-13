@@ -193,7 +193,7 @@ class ProductDetails extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () => productDetailsScreenController.productAddToCart(),
             child: Container(
               width: Get.width * 0.30,
               color: CustomColor.kLightGreenColor,

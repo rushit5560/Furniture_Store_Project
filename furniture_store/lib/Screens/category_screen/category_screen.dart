@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furniture_store/Screens/product_collection_screen/product_collection_screen.dart';
+import 'package:furniture_store/Screens/collection_screen/collection_screen.dart';
 import 'package:furniture_store/controllers/category_screen_controller/category_screen_controller.dart';
 import 'package:furniture_store/Screens/category_screen/category_screen_widgets.dart';
 import 'package:get/get.dart';
@@ -28,7 +28,7 @@ class CategoryScreen extends StatelessWidget {
                 onTap: () {
                   print('$index');
                   Get.to(()=>
-                      ProductCollectionScreen(),
+                      CollectionScreen(),
                     transition: Transition.rightToLeft,
                     arguments: categoryScreenController.categoryList[index].categoryName,
                   );

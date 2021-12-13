@@ -1,11 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:furniture_store/Screens/cart_screen/cart_screen.dart';
-import 'package:furniture_store/Screens/product_collection_screen/product_collection_screen.dart';
+import 'package:furniture_store/Screens/category_screen/category_screen.dart';
+import 'package:furniture_store/Screens/collection_screen/collection_screen.dart';
 import 'package:furniture_store/Screens/product_details_screen/product_details_screen.dart';
+import 'package:furniture_store/common/api_url.dart';
+import 'package:furniture_store/common/common_functions.dart';
 import 'package:furniture_store/common/custom_color.dart';
 import 'package:furniture_store/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:furniture_store/models/home_screen_model/category_model.dart';
+import 'package:furniture_store/models/home_screen_model/trending_model.dart';
 import 'package:get/get.dart';
+
+enum HeadingModules {category, trending, newArrivals}
 
 PreferredSizeWidget appBarModule() {
   return AppBar(
@@ -18,9 +25,7 @@ PreferredSizeWidget appBarModule() {
 
     actions: [
       IconButton(
-        onPressed: () {
-          Get.to(() => CartScreen());
-        },
+        onPressed: () => Get.to(() => CartScreen()),
         icon: Icon(Icons.shopping_cart_rounded),
       ),
       SizedBox(width: 8),
@@ -28,8 +33,7 @@ PreferredSizeWidget appBarModule() {
   );
 }
 
-// final homeScreenController = Get.find<HomeScreenController>();
-class CarouselSliderModule extends StatelessWidget {
+class BannerImageSliderModule extends StatelessWidget {
   final homeScreenController = Get.find<HomeScreenController>();
 
   @override
@@ -37,16 +41,11 @@ class CarouselSliderModule extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CarouselSlider.builder(
-        itemCount: homeScreenController.bannerList.length,
+        itemCount: homeScreenController.bannerLists.length,
         itemBuilder: (context, index, realIndex) {
-          return Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(homeScreenController.bannerList[index]),
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
+          final imgUrl = ApiUrl.ApiMainPath +
+              "${homeScreenController.bannerLists[index].imagePath}";
+          return _bannerListTile(imgUrl);
         },
         options: CarouselOptions(
             height: 150,
@@ -55,6 +54,20 @@ class CarouselSliderModule extends StatelessWidget {
             onPageChanged: (index, reason) {
               homeScreenController.activeIndex.value = index;
             }),
+      ),
+    );
+  }
+
+  Widget _bannerListTile(String imgUrl) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage("$imgUrl"),
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }
@@ -84,7 +97,7 @@ class SearchTextFieldModule extends StatelessWidget {
           suffixIcon: IconButton(
             onPressed: () {
               homeScreenController.searchFieldController.clear();
-              FocusScope.of(context).requestFocus(new FocusNode());
+              CommonFunctions().hideKeyBoard();
             },
             icon: Icon(Icons.search_rounded),
             color: CustomColor.kLightGreenColor,
@@ -104,30 +117,7 @@ class CategoryModule extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Category Text & ViewALl Text Module
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Categories',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              GestureDetector(
-                onTap: () {
-                  print('View All Clk');
-                },
-                child: Text(
-                  'View All',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        HeadingModule(heading: "Categories",headingModule: HeadingModules.category),
 
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -139,47 +129,51 @@ class CategoryModule extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               itemCount: homeScreenController.categoryList.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to(
-                        () => ProductCollectionScreen(),
-                        transition: Transition.rightToLeft,
-                        arguments:
-                            homeScreenController.categoryList[index].name,
-                      );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                            image: AssetImage(
-                                '${homeScreenController.categoryList[index].img}'),
-                            fit: BoxFit.cover,
-                          )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            '${homeScreenController.categoryList[index].name}',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                CategoryModel categorySingleItem =
+                    homeScreenController.categoryList[index];
+                return _categoryListTile(categorySingleItem);
               },
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _categoryListTile(CategoryModel categorySingleItem) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: GestureDetector(
+        onTap: () {
+          Get.to(
+            () => CollectionScreen(),
+            transition: Transition.rightToLeft,
+            arguments: categorySingleItem.name,
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 35,
+              width: 35,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                image: AssetImage('${categorySingleItem.img}'),
+                fit: BoxFit.cover,
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text(
+                '${categorySingleItem.name}',
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -191,30 +185,8 @@ class TrendingModule extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Trending',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              GestureDetector(
-                onTap: () {
-                  print('View All Clk');
-                },
-                child: Text(
-                  'View All',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        HeadingModule(heading: 'Trending', headingModule: HeadingModules.trending),
+
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -228,72 +200,76 @@ class TrendingModule extends StatelessWidget {
                 mainAxisSpacing: 8,
               ),
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => Get.to(() => ProductDetailsScreen()),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    color: Colors.grey.shade300,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 68,
-                          child: Image(
-                            image: AssetImage(
-                                '${homeScreenController.trendingList[index].img}'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(height: 3),
-                        Expanded(
-                          flex: 32,
-                          child: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${homeScreenController.trendingList[index].name}',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 2),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        '\$${homeScreenController.trendingList[index].activePrice}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: CustomColor.kLightGreenColor,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        '\$${homeScreenController.trendingList[index].deActivePrice}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                TrendingModel trendingSingleItem =
+                    homeScreenController.trendingList[index];
+                return _trendingListTile(trendingSingleItem);
               },
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _trendingListTile(TrendingModel trendingSingleItem) {
+    return GestureDetector(
+      onTap: () => Get.to(() => ProductDetailsScreen()),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        color: Colors.grey.shade300,
+        child: Column(
+          children: [
+            Expanded(
+              flex: 68,
+              child: Image(
+                image: AssetImage('${trendingSingleItem.img}'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(height: 3),
+            Expanded(
+              flex: 32,
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${trendingSingleItem.name}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 2),
+                      child: Row(
+                        children: [
+                          Text(
+                            '\$${trendingSingleItem.activePrice}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColor.kLightGreenColor,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            '\$${trendingSingleItem.deActivePrice}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -305,30 +281,7 @@ class NewArrivalModule extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Trending',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              GestureDetector(
-                onTap: () {
-                  print('View All Clk');
-                },
-                child: Text(
-                  'View All',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        HeadingModule(heading: 'New Arrivals', headingModule: HeadingModules.newArrivals),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Container(
@@ -339,80 +292,134 @@ class NewArrivalModule extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    width: Get.width * 0.45,
-                    decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Colors.grey.shade300, width: 1.5),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 35,
-                            child: Container(
-                              color: Colors.grey.shade300,
-                              child: Padding(
-                                padding: const EdgeInsets.all(2),
-                                child: Image(
-                                  image: AssetImage(
-                                      '${homeScreenController.trendingList[index].img}'),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Expanded(
-                            flex: 65,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${homeScreenController.trendingList[index].name}',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '\$${homeScreenController.trendingList[index].activePrice}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: CustomColor.kLightGreenColor,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      '\$${homeScreenController.trendingList[index].deActivePrice}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.lineThrough,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                TrendingModel newArrivalSingleItem =
+                    homeScreenController.trendingList[index];
+                return _newArrivalsListTile(newArrivalSingleItem);
               },
             ),
           ),
         ),
       ],
     );
+  }
+
+  Widget _newArrivalsListTile(TrendingModel newArrivalSingleItem) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Container(
+        width: Get.width * 0.45,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade300, width: 1.5),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 35,
+                child: Container(
+                  color: Colors.grey.shade300,
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: Image(
+                      image: AssetImage('${newArrivalSingleItem.img}'),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                flex: 65,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${newArrivalSingleItem.name}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '\$${newArrivalSingleItem.activePrice}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: CustomColor.kLightGreenColor,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          '\$${newArrivalSingleItem.deActivePrice}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.lineThrough,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class HeadingModule extends StatelessWidget {
+  final heading;
+  final headingModule;
+  HeadingModule({required this.heading, required this.headingModule});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '$heading',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          GestureDetector(
+            onTap: () => moveToNext(),
+            child: Text(
+              'View All',
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void moveToNext() {
+    switch(headingModule){
+      case(HeadingModules.category):
+        Get.to(()=> CategoryScreen());
+        break;
+      case(HeadingModules.trending):
+        Get.to(()=> CollectionScreen());
+        break;
+      case(HeadingModules.newArrivals):
+        Get.to(()=> CollectionScreen());
+        break;
+      default:
+        Get.to(()=> CategoryScreen());
+        break;
+    }
+
   }
 }

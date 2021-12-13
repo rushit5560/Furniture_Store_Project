@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/common/common_functions.dart';
+import 'package:furniture_store/common/common_widgets.dart';
 import 'package:furniture_store/common/custom_drawer/custom_drawer_screen.dart';
 import 'package:furniture_store/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:furniture_store/Screens/home_screen/home_screen_widgets.dart';
@@ -13,30 +14,29 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => CommonFunctions().hideKeyBoard(),
       child: Scaffold(
-
         appBar: appBarModule(),
-
         drawer: CustomDrawerScreen(),
-
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              CarouselSliderModule(),
-              const SizedBox(height: 10),
-              SearchTextFieldModule(),
-              const SizedBox(height: 15),
-              CategoryModule(),
-              const SizedBox(height: 15),
-              TrendingModule(),
-              const SizedBox(height: 15),
-              NewArrivalModule(),
-              const SizedBox(height: 15),
-            ],
-          ),
+        body: Obx(
+          () => homeScreenController.isLoading.value
+              ? CustomCircularProgressIndicator()
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      BannerImageSliderModule(),
+                      const SizedBox(height: 10),
+                      SearchTextFieldModule(),
+                      const SizedBox(height: 15),
+                      CategoryModule(),
+                      const SizedBox(height: 15),
+                      TrendingModule(),
+                      const SizedBox(height: 15),
+                      NewArrivalModule(),
+                      const SizedBox(height: 15),
+                    ],
+                  ),
+                ),
         ),
       ),
     );
   }
-
-
 }

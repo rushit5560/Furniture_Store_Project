@@ -21,7 +21,6 @@ PreferredSizeWidget appBarModule(String title) {
 
 
 class ProductCollectionListModule extends StatelessWidget {
-  // final productCollectionScreenController = Get.find<ProductCollectionScreenController>();
 
   @override
   Widget build(BuildContext context) {

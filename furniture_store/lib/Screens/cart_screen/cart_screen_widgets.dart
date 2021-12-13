@@ -19,9 +19,11 @@ class CartItemsListModule extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         separatorBuilder: (BuildContext context, int index) =>
             Divider(height: 1, thickness: 1),
-        itemBuilder: (context, index){
-          Cartditeil cartSingleItem = cartScreenController.userCartProductLists[index];
-          final imgUrl = ApiUrl.ApiMainPath + "asset/uploads/product/" +
+        itemBuilder: (context, index) {
+          Cartditeil cartSingleItem =
+              cartScreenController.userCartProductLists[index];
+          final imgUrl = ApiUrl.ApiMainPath +
+              "asset/uploads/product/" +
               "${cartSingleItem.showimg}";
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -60,17 +62,13 @@ class CartItemsListModule extends StatelessWidget {
                                     fontSize: 15,
                                   ),
                                 ),
-
                                 Text(
                                   '${cartSingleItem.cquantity} Items',
                                   style: TextStyle(
                                     color: Colors.grey,
                                   ),
                                 ),
-
-                                Text(
-                                    '\$${cartSingleItem.productcost}'
-                                ),
+                                Text('\$${cartSingleItem.productcost}'),
                               ],
                             ),
                           ),
@@ -92,7 +90,6 @@ class CartItemsListModule extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-
                             GestureDetector(
                               onTap: () {
                                 if (cartSingleItem.cquantity > 1) {
@@ -117,21 +114,17 @@ class CartItemsListModule extends StatelessWidget {
                                 ),
                               ),
                             ),
-
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
                               child: Text(
                                 '${cartSingleItem.cquantity}',
-                                style: TextStyle(
-                                    fontSize: 15
-                                ),
+                                style: TextStyle(fontSize: 15),
                               ),
                             ),
-
                             GestureDetector(
                               onTap: () {
-                                var cartItemInc =
-                                    cartSingleItem.cquantity + 1;
+                                var cartItemInc = cartSingleItem.cquantity + 1;
                                 print('cartItemInc : $cartItemInc');
                                 cartScreenController.getAddProductCartQty(
                                   cartItemInc,
@@ -155,7 +148,8 @@ class CartItemsListModule extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       GestureDetector(
-                        onTap: ()=> cartScreenController.getDeleteProductCart(cartSingleItem.cartDetailId),
+                        onTap: () => cartScreenController
+                            .getDeleteProductCart(cartSingleItem.cartDetailId),
                         child: Container(
                           child: Icon(
                             Icons.delete_rounded,
@@ -175,7 +169,6 @@ class CartItemsListModule extends StatelessWidget {
     );
   }
 }
-
 
 class CartPriceModule extends StatelessWidget {
   final cartScreenController = Get.find<CartScreenController>();
@@ -202,7 +195,6 @@ class CartPriceModule extends StatelessWidget {
               ],
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
@@ -220,7 +212,6 @@ class CartPriceModule extends StatelessWidget {
             ),
           ),
           Divider(thickness: 1),
-
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
@@ -251,7 +242,7 @@ class CheckOutButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: GestureDetector(
-        onTap: () => Get.to(()=> CheckOutScreen()),
+        onTap: () => Get.to(() => CheckOutScreen()),
         child: Container(
           color: CustomColor.kLightGreenColor,
           child: Center(

@@ -9,7 +9,7 @@ import 'package:furniture_store/common/common_functions.dart';
 import 'package:furniture_store/common/custom_color.dart';
 import 'package:furniture_store/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:furniture_store/models/home_screen_model/category_model.dart';
-import 'package:furniture_store/models/home_screen_model/trending_model.dart';
+import 'package:furniture_store/models/home_screen_model/featured_product_model.dart';
 import 'package:get/get.dart';
 
 enum HeadingModules {category, trending, newArrivals}
@@ -193,15 +193,15 @@ class TrendingModule extends StatelessWidget {
             child: GridView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: homeScreenController.trendingList.length,
+              itemCount: homeScreenController.featuredProductLists.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
               ),
               itemBuilder: (context, index) {
-                TrendingModel trendingSingleItem =
-                    homeScreenController.trendingList[index];
+                Datum1 trendingSingleItem =
+                homeScreenController.featuredProductLists[index];
                 return _trendingListTile(trendingSingleItem);
               },
             ),
@@ -211,9 +211,11 @@ class TrendingModule extends StatelessWidget {
     );
   }
 
-  Widget _trendingListTile(TrendingModel trendingSingleItem) {
+  Widget _trendingListTile(Datum1 trendingSingleItem) {
+    final imgUrl = ApiUrl.ApiMainPath + "${trendingSingleItem.showimg}";
     return GestureDetector(
-      onTap: () => Get.to(() => ProductDetailsScreen()),
+      onTap: () => Get.to(() => ProductDetailsScreen(),
+          arguments: trendingSingleItem.id),
       child: Container(
         padding: EdgeInsets.all(10),
         color: Colors.grey.shade300,
@@ -222,7 +224,7 @@ class TrendingModule extends StatelessWidget {
             Expanded(
               flex: 68,
               child: Image(
-                image: AssetImage('${trendingSingleItem.img}'),
+                image: NetworkImage('$imgUrl'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -234,7 +236,7 @@ class TrendingModule extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${trendingSingleItem.name}',
+                      '${trendingSingleItem.productname}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -246,7 +248,7 @@ class TrendingModule extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            '\$${trendingSingleItem.activePrice}',
+                            '\$${trendingSingleItem.productcost}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: CustomColor.kLightGreenColor,
@@ -254,7 +256,7 @@ class TrendingModule extends StatelessWidget {
                           ),
                           SizedBox(width: 10),
                           Text(
-                            '\$${trendingSingleItem.deActivePrice}',
+                            '\$${trendingSingleItem.productcost}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.lineThrough,
@@ -287,13 +289,13 @@ class NewArrivalModule extends StatelessWidget {
           child: Container(
             height: 60,
             child: ListView.builder(
-              itemCount: homeScreenController.trendingList.length,
+              itemCount: homeScreenController.featuredProductLists.length,
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                TrendingModel newArrivalSingleItem =
-                    homeScreenController.trendingList[index];
+                Datum1 newArrivalSingleItem =
+                homeScreenController.featuredProductLists[index];
                 return _newArrivalsListTile(newArrivalSingleItem);
               },
             ),
@@ -303,70 +305,77 @@ class NewArrivalModule extends StatelessWidget {
     );
   }
 
-  Widget _newArrivalsListTile(TrendingModel newArrivalSingleItem) {
+  Widget _newArrivalsListTile(Datum1 newArrivalSingleItem) {
+    final imgUrl = ApiUrl.ApiMainPath + "${newArrivalSingleItem.showimg}";
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Container(
-        width: Get.width * 0.45,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300, width: 1.5),
+      child: GestureDetector(
+        onTap: () => Get.to(
+          () => ProductDetailsScreen(),
+          arguments: newArrivalSingleItem.id,
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 35,
-                child: Container(
-                  color: Colors.grey.shade300,
-                  child: Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: Image(
-                      image: AssetImage('${newArrivalSingleItem.img}'),
+        child: Container(
+          width: Get.width * 0.45,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade300, width: 1.5),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 35,
+                  child: Container(
+                    color: Colors.grey.shade300,
+                    child: Padding(
+                      padding: const EdgeInsets.all(2),
+                      child: Image(
+                        image: NetworkImage('$imgUrl'),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 5),
-              Expanded(
-                flex: 65,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${newArrivalSingleItem.name}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                const SizedBox(width: 5),
+                Expanded(
+                  flex: 65,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${newArrivalSingleItem.productname}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          '\$${newArrivalSingleItem.activePrice}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: CustomColor.kLightGreenColor,
-                            fontSize: 12,
+                      Row(
+                        children: [
+                          Text(
+                            '\$${newArrivalSingleItem.productcost}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColor.kLightGreenColor,
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          '\$${newArrivalSingleItem.deActivePrice}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.lineThrough,
-                            fontSize: 12,
+                          const SizedBox(width: 5),
+                          Text(
+                            '\$${newArrivalSingleItem.productcost}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.lineThrough,
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

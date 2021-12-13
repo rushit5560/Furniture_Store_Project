@@ -128,7 +128,7 @@ class ProductDetails extends StatelessWidget {
                 ),
               ),
               Text(
-                '\$${productDetailsScreenController.productDetailLists[0]..productcost}',
+                '\$${productDetailsScreenController.productDetailLists[0].productcost}',
                 style: TextStyle(
                   color: CustomColor.kLightGreenColor,
                   fontSize: 15,

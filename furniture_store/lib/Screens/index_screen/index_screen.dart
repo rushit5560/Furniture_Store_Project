@@ -12,7 +12,6 @@ class IndexScreen extends StatefulWidget {
   @override
   _IndexScreenState createState() => _IndexScreenState();
 }
-
 class _IndexScreenState extends State<IndexScreen> {
   int _currentIndex = 0;
 

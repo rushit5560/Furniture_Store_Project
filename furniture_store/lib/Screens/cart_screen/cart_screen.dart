@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/common/common_widgets.dart';
 import 'package:furniture_store/controllers/cart_screen_controller/cart_screen_controller.dart';
-import 'package:furniture_store/widgets/cart_screen_widgets/cart_screen_widgets.dart';
+import 'package:furniture_store/Screens/cart_screen/cart_screen_widgets.dart';
 import 'package:get/get.dart';
 
 class CartScreen extends StatelessWidget {

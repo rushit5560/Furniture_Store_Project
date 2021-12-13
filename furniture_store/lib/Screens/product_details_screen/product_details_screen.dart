@@ -4,7 +4,7 @@ import 'package:furniture_store/common/common_widgets.dart';
 import 'package:furniture_store/common/custom_color.dart';
 import 'package:furniture_store/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:furniture_store/controllers/product_details_screen_controller/product_details_screen_controller.dart';
-import 'package:furniture_store/widgets/home_screen_widgets/home_screen_widgets.dart';
+import 'package:furniture_store/Screens/home_screen/home_screen_widgets.dart';
 import 'package:get/get.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -193,7 +193,7 @@ class ProductDetailsScreen extends StatelessWidget {
             ),
           ),
 
-          NewArrivalModule(homeScreenController: homeScreenController),
+          NewArrivalModule(),
 
           _cartAndBuyButton(),
         ],

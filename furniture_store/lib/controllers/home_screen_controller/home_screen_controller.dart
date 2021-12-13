@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:furniture_store/common/image_url.dart';
 import 'package:furniture_store/models/home_screen_model/category_model.dart';
 import 'package:furniture_store/models/home_screen_model/trending_model.dart';
 import 'package:get/get.dart';
 
 class HomeScreenController extends GetxController {
+  TextEditingController searchFieldController = TextEditingController();
   var activeIndex = 0.obs;
   List<String> bannerList = [ImageUrl.bannerImg, ImageUrl.bannerImg, ImageUrl.bannerImg];
   List<CategoryModel> categoryList = [

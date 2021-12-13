@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/common/common_widgets.dart';
 import 'package:furniture_store/controllers/checkout_screen_controller/checkout_screen_controller.dart';
-import 'package:furniture_store/widgets/checkout_screen_widgets/checkout_screen_widgets.dart';
+import 'package:furniture_store/Screens/checkout_screen/checkout_screen_widgets.dart';
 import 'package:get/get.dart';
 
 class CheckOutScreen extends StatelessWidget {

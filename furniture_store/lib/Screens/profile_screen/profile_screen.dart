@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furniture_store/widgets/profile_screen_widgets/profile_screen_widgets.dart';
+import 'package:furniture_store/Screens/profile_screen/profile_screen_widgets.dart';
 import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {

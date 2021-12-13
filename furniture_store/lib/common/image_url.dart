@@ -19,4 +19,7 @@ class ImageUrl {
   static const mastercard = MainPath + 'mastercard.png';
   static const paypal = MainPath + 'paypal.png';
   static const visa = MainPath + 'visa.png';
+
+  static const facebook = MainPath + 'facebook.png';
+  static const google = MainPath + 'google.png';
 }

@@ -19,7 +19,7 @@ PreferredSizeWidget appBarModule() {
     actions: [
       IconButton(
         onPressed: () {
-          Get.to(()=> CartScreen());
+          Get.to(() => CartScreen());
         },
         icon: Icon(Icons.shopping_cart_rounded),
       ),
@@ -28,10 +28,9 @@ PreferredSizeWidget appBarModule() {
   );
 }
 
+// final homeScreenController = Get.find<HomeScreenController>();
 class CarouselSliderModule extends StatelessWidget {
-  HomeScreenController homeScreenController;
-
-  CarouselSliderModule({required this.homeScreenController});
+  final homeScreenController = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +61,14 @@ class CarouselSliderModule extends StatelessWidget {
 }
 
 class SearchTextFieldModule extends StatelessWidget {
-  TextEditingController searchFieldController;
-
-  SearchTextFieldModule({required this.searchFieldController});
+  final homeScreenController = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        controller: searchFieldController,
+        controller: homeScreenController.searchFieldController,
         keyboardType: TextInputType.text,
         cursorColor: Colors.black,
         decoration: InputDecoration(
@@ -86,7 +83,7 @@ class SearchTextFieldModule extends StatelessWidget {
           ),
           suffixIcon: IconButton(
             onPressed: () {
-              searchFieldController.clear();
+              homeScreenController.searchFieldController.clear();
               FocusScope.of(context).requestFocus(new FocusNode());
             },
             icon: Icon(Icons.search_rounded),
@@ -99,9 +96,7 @@ class SearchTextFieldModule extends StatelessWidget {
 }
 
 class CategoryModule extends StatelessWidget {
-  HomeScreenController homeScreenController;
-
-  CategoryModule({required this.homeScreenController});
+  final homeScreenController = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -190,9 +185,7 @@ class CategoryModule extends StatelessWidget {
 }
 
 class TrendingModule extends StatelessWidget {
-  HomeScreenController homeScreenController;
-
-  TrendingModule({required this.homeScreenController});
+  final homeScreenController = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +229,7 @@ class TrendingModule extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () => Get.to(()=> ProductDetailsScreen()),
+                  onTap: () => Get.to(() => ProductDetailsScreen()),
                   child: Container(
                     padding: EdgeInsets.all(10),
                     color: Colors.grey.shade300,
@@ -281,7 +274,8 @@ class TrendingModule extends StatelessWidget {
                                         '\$${homeScreenController.trendingList[index].deActivePrice}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          decoration: TextDecoration.lineThrough,
+                                          decoration:
+                                              TextDecoration.lineThrough,
                                         ),
                                       ),
                                     ],
@@ -305,9 +299,7 @@ class TrendingModule extends StatelessWidget {
 }
 
 class NewArrivalModule extends StatelessWidget {
-  HomeScreenController homeScreenController;
-
-  NewArrivalModule({required this.homeScreenController});
+  final homeScreenController = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {

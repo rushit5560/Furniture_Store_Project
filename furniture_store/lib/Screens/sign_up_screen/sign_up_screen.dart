@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:furniture_store/widgets/sign_in_screen_widgets/sign_in_screen_widgets.dart';
-import 'package:furniture_store/widgets/sign_up_screen_widgets/sign_up_screen_widgets.dart';
+import 'package:furniture_store/Screens/sign_in_screen/sign_in_screen_widgets.dart';
+import 'package:furniture_store/Screens/sign_up_screen/sign_up_screen_widgets.dart';
+import 'package:furniture_store/common/common_widgets.dart';
 import 'package:get/get.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -23,7 +24,7 @@ class SignUpScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SignInWelcomeText(),
+                    SignInOrSignOutWelcomeText(),
                     SizedBox(height: Get.height * 0.04),
 
                     SignUpUserNameFieldModule(userNameFieldController: userNameFieldController),

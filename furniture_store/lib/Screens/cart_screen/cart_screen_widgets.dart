@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/Screens/checkout_screen/checkout_screen.dart';
+import 'package:furniture_store/common/api_url.dart';
 import 'package:furniture_store/common/custom_color.dart';
 import 'package:furniture_store/controllers/cart_screen_controller/cart_screen_controller.dart';
+import 'package:furniture_store/models/cart_screen_model/cart_model.dart';
 import 'package:get/get.dart';
 
 class CartItemsListModule extends StatelessWidget {
-  CartScreenController cartScreenController;
-  CartItemsListModule({required this.cartScreenController});
+  final cartScreenController = Get.find<CartScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView.separated(
-        itemCount: cartScreenController.cartItemList.length,
+        itemCount: cartScreenController.userCartProductLists.length,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         separatorBuilder: (BuildContext context, int index) =>
             Divider(height: 1, thickness: 1),
         itemBuilder: (context, index){
+          Cartditeil cartSingleItem = cartScreenController.userCartProductLists[index];
+          final imgUrl = ApiUrl.ApiMainPath + "asset/uploads/product/" +
+              "${cartSingleItem.showimg}";
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
@@ -36,7 +40,7 @@ class CartItemsListModule extends StatelessWidget {
                             padding: const EdgeInsets.all(5),
                             child: Center(
                               child: Image(
-                                image: AssetImage('${cartScreenController.cartItemList[index].img}'),
+                                image: NetworkImage('$imgUrl'),
                               ),
                             ),
                           ),
@@ -48,7 +52,7 @@ class CartItemsListModule extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${cartScreenController.cartItemList[index].title}',
+                                  '${cartSingleItem.productname}',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -58,14 +62,14 @@ class CartItemsListModule extends StatelessWidget {
                                 ),
 
                                 Text(
-                                  '${cartScreenController.cartItemList[index].qty} Items',
+                                  '${cartSingleItem.cquantity} Items',
                                   style: TextStyle(
                                     color: Colors.grey,
                                   ),
                                 ),
 
                                 Text(
-                                    '\$${cartScreenController.cartItemList[index].price}'
+                                    '\$${cartSingleItem.productcost}'
                                 ),
                               ],
                             ),
@@ -95,7 +99,7 @@ class CartItemsListModule extends StatelessWidget {
                                 //   var cartItemDec = cartItemLists[index].productQty - 1;
                                 //   print('$cartItemDec');
                                 // }
-                                print('${cartScreenController.cartItemList[index].qty}');
+                                // print('${cartSingleItem.cquantity}');
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -113,7 +117,7 @@ class CartItemsListModule extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 5),
                               child: Text(
-                                '${cartScreenController.cartItemList[index].qty}',
+                                '${cartSingleItem.cquantity}',
                                 style: TextStyle(
                                     fontSize: 15
                                 ),
@@ -167,7 +171,7 @@ class CartItemsListModule extends StatelessWidget {
 
 
 class CartPriceModule extends StatelessWidget {
-  const CartPriceModule({Key? key}) : super(key: key);
+  final cartScreenController = Get.find<CartScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +206,7 @@ class CartPriceModule extends StatelessWidget {
                   style: TextStyle(fontSize: 15),
                 ),
                 Text(
-                  '\$450.00',
+                  '\$${cartScreenController.userCartTotalAmount}',
                   style: TextStyle(fontSize: 15),
                 ),
               ],
@@ -220,7 +224,7 @@ class CartPriceModule extends StatelessWidget {
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '\$460.00',
+                  '\$${cartScreenController.userCartTotalAmount}',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ],

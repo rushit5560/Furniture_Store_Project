@@ -95,11 +95,15 @@ class CartItemsListModule extends StatelessWidget {
 
                             GestureDetector(
                               onTap: () {
-                                // if(cartItemLists[index].productQty > 1){
-                                //   var cartItemDec = cartItemLists[index].productQty - 1;
-                                //   print('$cartItemDec');
-                                // }
-                                // print('${cartSingleItem.cquantity}');
+                                if (cartSingleItem.cquantity > 1) {
+                                  var cartItemDec =
+                                      cartSingleItem.cquantity - 1;
+                                  print('cartItemDec : $cartItemDec');
+                                  cartScreenController.getAddProductCartQty(
+                                    cartItemDec,
+                                    cartSingleItem.cartDetailId,
+                                  );
+                                }
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -126,8 +130,13 @@ class CartItemsListModule extends StatelessWidget {
 
                             GestureDetector(
                               onTap: () {
-                                // var cartItemInc = cartScreenController.cartItemList[index].qty + 1;
-                                // print('$cartItemInc');
+                                var cartItemInc =
+                                    cartSingleItem.cquantity + 1;
+                                print('cartItemInc : $cartItemInc');
+                                cartScreenController.getAddProductCartQty(
+                                  cartItemInc,
+                                  cartSingleItem.cartDetailId,
+                                );
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -146,9 +155,7 @@ class CartItemsListModule extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       GestureDetector(
-                        onTap: (){
-                          print('Clicked on Delete Button on Index $index');
-                        },
+                        onTap: ()=> cartScreenController.getDeleteProductCart(cartSingleItem.cartDetailId),
                         child: Container(
                           child: Icon(
                             Icons.delete_rounded,

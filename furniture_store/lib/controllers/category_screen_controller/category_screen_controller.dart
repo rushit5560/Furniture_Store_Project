@@ -1,58 +1,41 @@
-import 'package:furniture_store/common/image_url.dart';
-import 'package:furniture_store/models/category_screen_model/category_screen_model.dart';
+import 'dart:convert';
+
+import 'package:furniture_store/common/api_url.dart';
+import 'package:furniture_store/models/category_screen_model/category_model.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class CategoryScreenController extends GetxController {
-  List<CategoryModel> categoryList = [
-    CategoryModel(
-      img: ImageUrl.category1,
-      categoryName: 'Cupboard',
-      itemsCount: '1099'
-    ),
-    CategoryModel(
-        img: ImageUrl.category2,
-        categoryName: 'Sofa Chair',
-        itemsCount: '1099'
-    ),
-    CategoryModel(
-        img: ImageUrl.category3,
-        categoryName: 'Sideboard',
-        itemsCount: '1099'
-    ),
-    CategoryModel(
-        img: ImageUrl.category4,
-        categoryName: 'Nightstand',
-        itemsCount: '1099'
-    ),
-    CategoryModel(
-        img: ImageUrl.category5,
-        categoryName: 'Nightstand',
-        itemsCount: '1099'
-    ),
-    CategoryModel(
-        img: ImageUrl.category1,
-        categoryName: 'Cupboard',
-        itemsCount: '1099'
-    ),
-    CategoryModel(
-        img: ImageUrl.category2,
-        categoryName: 'Sofa Chair',
-        itemsCount: '1099'
-    ),
-    CategoryModel(
-        img: ImageUrl.category3,
-        categoryName: 'Sideboard',
-        itemsCount: '1099'
-    ),
-    CategoryModel(
-        img: ImageUrl.category4,
-        categoryName: 'Nightstand',
-        itemsCount: '1099'
-    ),
-    CategoryModel(
-        img: ImageUrl.category5,
-        categoryName: 'Nightstand',
-        itemsCount: '1099'
-    ),
-  ];
+  RxBool isLoading = false.obs;
+  RxBool isStatus = false.obs;
+  RxList<Datum> categoryLists = RxList();
+
+  getCategoryData() async {
+    isLoading(true);
+    String url = ApiUrl.CategoryApi;
+    print('Url : $url');
+
+    try{
+      http.Response response = await http.get(Uri.parse(url));
+
+      CategoryData categoryData = CategoryData.fromJson(json.decode(response.body));
+      isStatus = categoryData.success.obs;
+
+      if(isStatus.value){
+        categoryLists = categoryData.data.obs;
+      } else {
+        print('Category False False');
+      }
+    } catch(e) {
+      print('Category Data Error : $e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  @override
+  void onInit() {
+    getCategoryData();
+    super.onInit();
+  }
 }

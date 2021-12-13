@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/Screens/sign_in_screen/sign_in_screen.dart';
 import 'package:furniture_store/common/custom_color.dart';
+import 'package:furniture_store/common/field_validation.dart';
+import 'package:furniture_store/common/text_fields_decorations.dart';
+import 'package:furniture_store/controllers/sign_up_screen_controller/sign_up_screen_controller.dart';
 import 'package:get/get.dart';
 
 class SignUpUserNameFieldModule extends StatelessWidget {
-  TextEditingController userNameFieldController;
-
-  SignUpUserNameFieldModule({required this.userNameFieldController});
+  final signUpScreenController = Get.find<SignUpScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +21,11 @@ class SignUpUserNameFieldModule extends StatelessWidget {
           ),
         ),
         TextFormField(
-          controller: userNameFieldController,
+          controller: signUpScreenController.userNameFieldController,
           cursorColor: CustomColor.kLightGreenColor,
           keyboardType: TextInputType.emailAddress,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return "UserName Field not be Empty";
-            }
-          },
-          decoration: inputDecoration('Enter UserName'),
+          validator: (value) => FieldValidator().validateFullName(value!),
+          decoration: formInputDecoration(hintText: 'Enter UserName'),
         ),
       ],
     );
@@ -36,9 +33,7 @@ class SignUpUserNameFieldModule extends StatelessWidget {
 }
 
 class SignUpEmailFieldModule extends StatelessWidget {
-  TextEditingController emailFieldController;
-
-  SignUpEmailFieldModule({required this.emailFieldController});
+  final signUpScreenController = Get.find<SignUpScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +47,11 @@ class SignUpEmailFieldModule extends StatelessWidget {
           ),
         ),
         TextFormField(
-          controller: emailFieldController,
+          controller: signUpScreenController.emailFieldController,
           cursorColor: CustomColor.kLightGreenColor,
           keyboardType: TextInputType.emailAddress,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return "Email Field not be Empty";
-            }
-            if (!value.contains('@')) {
-              return "Enter Valid Email";
-            }
-          },
-          decoration: inputDecoration('Enter Email'),
+          validator: (value) => FieldValidator().validateEmail(value!),
+          decoration: formInputDecoration(hintText: 'Enter Email'),
         ),
       ],
     );
@@ -71,9 +59,7 @@ class SignUpEmailFieldModule extends StatelessWidget {
 }
 
 class SignUpPasswordFieldModule extends StatelessWidget {
-  TextEditingController passwordFieldController;
-
-  SignUpPasswordFieldModule({required this.passwordFieldController});
+  final signUpScreenController = Get.find<SignUpScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -87,19 +73,12 @@ class SignUpPasswordFieldModule extends StatelessWidget {
           ),
         ),
         TextFormField(
-          controller: passwordFieldController,
+          controller: signUpScreenController.passwordFieldController,
           cursorColor: CustomColor.kLightGreenColor,
           keyboardType: TextInputType.emailAddress,
           obscureText: true,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return "Password Field not be Empty";
-            }
-            if (value.length <= 5) {
-              return "Password Length atLeast 6 Character";
-            }
-          },
-          decoration: inputDecoration('Enter Password'),
+          validator: (value) => FieldValidator().validatePassword(value!),
+          decoration: formInputDecoration(hintText: 'Enter Password'),
         ),
       ],
     );
@@ -107,24 +86,18 @@ class SignUpPasswordFieldModule extends StatelessWidget {
 }
 
 class SignUpButton extends StatelessWidget {
-  TextEditingController emailFieldController, passwordFieldController, userNameFieldController;
-  GlobalKey<FormState> formKey;
-
-  SignUpButton({
-    required this.formKey,
-    required this.userNameFieldController,
-    required this.emailFieldController,
-    required this.passwordFieldController,
-  });
+  final signUpScreenController = Get.find<SignUpScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (formKey.currentState!.validate()) {
-          print('Username : ${userNameFieldController.text}');
-          print('Email : ${emailFieldController.text}');
-          print('password : ${passwordFieldController.text}');
+        if (signUpScreenController.formKey.currentState!.validate()) {
+          signUpScreenController.getRegisterData(
+            "${signUpScreenController.userNameFieldController.text.trim()}",
+            "${signUpScreenController.emailFieldController.text.trim().toLowerCase()}",
+            "${signUpScreenController.passwordFieldController.text.trim()}",
+          );
         }
       },
       child: Container(
@@ -147,21 +120,18 @@ class SignUpButton extends StatelessWidget {
 }
 
 class SignUpWithText extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Text(
       'Sign Up With',
       style: TextStyle(
         fontWeight: FontWeight.bold,
-
       ),
     );
   }
 }
 
 class SignInText extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -173,7 +143,7 @@ class SignInText extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Get.off(()=> SignInScreen());
+            Get.off(() => SignInScreen());
           },
           child: Text(
             'Signin',
@@ -183,24 +153,4 @@ class SignInText extends StatelessWidget {
       ],
     );
   }
-}
-
-InputDecoration inputDecoration(hintText) {
-  return InputDecoration(
-    hintText: '$hintText',
-    isDense: true,
-    contentPadding: EdgeInsets.only(top: 10, bottom: 10, right: 10, left: 2),
-    enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey),
-    ),
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey),
-    ),
-    errorBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey),
-    ),
-    focusedErrorBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey),
-    ),
-  );
 }

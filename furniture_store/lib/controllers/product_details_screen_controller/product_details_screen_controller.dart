@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:furniture_store/common/api_url.dart';
 import 'package:furniture_store/models/product_detail_screen_model/addtocart_model.dart';
+import 'package:furniture_store/models/product_detail_screen_model/get_product_review_model.dart';
 import 'package:furniture_store/models/product_detail_screen_model/product_detail_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +15,8 @@ class ProductDetailsScreenController extends GetxController {
   RxBool isStatus = false.obs;
   RxInt activeIndex = 0.obs;
   RxList<Datum> productDetailLists = RxList();
+  RxList<Datum1> productReviewList = RxList();
+  TextEditingController reviewAddFieldController = TextEditingController();
   var userId;
 
 
@@ -40,10 +44,41 @@ class ProductDetailsScreenController extends GetxController {
     } catch(e) {
       print('Product Details Error : $e');
     } finally {
+      // isLoading(false);
+      getProductReview();
+    }
+
+  }
+
+  getProductReview() async {
+    isLoading(true);
+    String url = ApiUrl.ProductReviewApi;
+    print('Url : $url');
+
+    try{
+      Map data = {
+        "productid": "$productId"
+      };
+      print('data : $data');
+      http.Response response = await http.post(Uri.parse(url), body: data);
+      ProductReviewData productReviewData = ProductReviewData.fromJson(json.decode(response.body));
+
+      isStatus = productReviewData.success.obs;
+
+      if(isStatus.value){
+        productReviewList.clear();
+        productReviewList = productReviewData.data.obs;
+        print('productReviewList : $productReviewList');
+      } else {
+        print('Product Review False False');
+      }
+    } catch(e){
+      print('Product Review Error : $e');
+    } finally {
       isLoading(false);
     }
-    // getProductReview();
   }
+
 
   productAddToCart() async {
     isLoading(true);

@@ -1,10 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:furniture_store/Screens/home_screen/home_screen_widgets.dart';
 import 'package:furniture_store/common/api_url.dart';
 import 'package:furniture_store/common/common_widgets.dart';
 import 'package:furniture_store/common/custom_color.dart';
+import 'package:furniture_store/common/field_validation.dart';
+import 'package:furniture_store/common/text_fields_decorations.dart';
 import 'package:furniture_store/controllers/product_details_screen_controller/product_details_screen_controller.dart';
+import 'package:furniture_store/models/product_detail_screen_model/get_product_review_model.dart';
 import 'package:get/get.dart';
 
 class ProductImageSliderModule extends StatelessWidget {
@@ -105,7 +109,7 @@ class FavouriteButton extends StatelessWidget {
 class ProductDetails extends StatelessWidget {
   ProductDetails({Key? key}) : super(key: key);
   final productDetailsScreenController =
-  Get.find<ProductDetailsScreenController>();
+      Get.find<ProductDetailsScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +159,8 @@ class ProductDetails extends StatelessWidget {
             isScrollable: true,
             tabs: [
               Tab(text: 'Description'),
-              Tab(text: 'review'),
+              Tab(text: 'Review'),
+              Tab(text: 'Add Review')
             ],
           ),
           CustomDivider(),
@@ -164,7 +169,8 @@ class ProductDetails extends StatelessWidget {
             child: TabBarView(
               children: [
                 _productDescription(),
-                _productDescription(),
+                _productReviews(),
+                _addProductReview(),
               ],
             ),
           ),
@@ -182,6 +188,126 @@ class ProductDetails extends StatelessWidget {
         '${productDetailsScreenController.productDetailLists[0].fullText}',
         maxLines: 5,
         overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+
+  Widget _productReviews() {
+    return ListView.builder(
+      itemCount: productDetailsScreenController.productReviewList.length,
+      itemBuilder: (context, index) {
+        Datum1 productSingleReview =
+            productDetailsScreenController.productReviewList[index];
+        return _productReviewListTile(productSingleReview);
+      },
+    );
+  }
+
+  Widget _productReviewListTile(Datum1 productSingleReview) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        '${productSingleReview.username}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Container(
+                        child: RatingBar.builder(
+                          itemCount: 5,
+                          ignoreGestures: true,
+                          unratedColor: CustomColor.kLightOrangeColor,
+                          allowHalfRating: true,
+                          itemSize: 15,
+                          minRating: 1,
+                          glow: false,
+                          initialRating: productSingleReview.ratings.toDouble(),
+                          itemBuilder: (context, _) {
+                            return Icon(
+                              Icons.star_rounded,
+                              color: CustomColor.kOrangeColor,
+                            );
+                          },
+                          onRatingUpdate: (rating) {
+                            print(rating);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    child: Text(
+                      productSingleReview.comment,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _addProductReview() {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            child: RatingBar.builder(
+              itemCount: 5,
+              unratedColor: CustomColor.kLightOrangeColor,
+              allowHalfRating: true,
+              itemSize: 18,
+              minRating: 1,
+              glow: false,
+              initialRating: 0,
+              itemBuilder: (context, _) {
+                return Icon(
+                  Icons.star_rounded,
+                  color: CustomColor.kOrangeColor,
+                );
+              },
+              onRatingUpdate: (rating) {
+                print(rating);
+              },
+            ),
+          ),
+          SpacerHeight(5),
+          TextFormField(
+            controller: productDetailsScreenController.reviewAddFieldController,
+            validator: (value) => FieldValidator().validateFullName(value!),
+            maxLines: 3,
+            decoration: addReviewFieldDecoration(hintText: 'Comment'),
+          ),
+          SpacerHeight(5),
+          Container(
+            // alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: CustomColor.kDarkGreenColor
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Text(
+                'Submit',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

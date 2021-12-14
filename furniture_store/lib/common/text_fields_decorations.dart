@@ -19,3 +19,23 @@ InputDecoration formInputDecoration({String? hintText}) {
     ),
   );
 }
+
+InputDecoration addReviewFieldDecoration({String? hintText}) {
+  return InputDecoration(
+    hintText: '$hintText',
+    isDense: true,
+    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey),
+    ),
+  );
+}

@@ -4,6 +4,7 @@ InputDecoration formInputDecoration({String? hintText}) {
   return InputDecoration(
     hintText: '$hintText',
     isDense: true,
+    counterText: '',
     contentPadding: EdgeInsets.only(top: 10, bottom: 10, right: 10, left: 2),
     enabledBorder: UnderlineInputBorder(
       borderSide: BorderSide(color: Colors.grey),

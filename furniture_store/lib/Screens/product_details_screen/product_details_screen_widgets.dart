@@ -295,10 +295,7 @@ class ProductDetails extends StatelessWidget {
           ),
           SpacerHeight(5),
           Container(
-            // alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: CustomColor.kDarkGreenColor
-            ),
+            decoration: BoxDecoration(color: CustomColor.kDarkGreenColor),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(

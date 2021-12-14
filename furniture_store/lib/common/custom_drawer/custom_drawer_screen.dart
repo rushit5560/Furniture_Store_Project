@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/Screens/category_screen/category_screen.dart';
+import 'package:furniture_store/Screens/contact_us_screen/contact_us_screen.dart';
 import 'package:furniture_store/Screens/sign_in_screen/sign_in_screen.dart';
 import 'package:furniture_store/common/custom_color.dart';
 import 'package:furniture_store/common/image_url.dart';
@@ -163,7 +164,7 @@ class CustomDrawerScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: GestureDetector(
-        onTap: () {print('Contact Us');},
+        onTap: () => Get.to(()=> ContactUsScreen()),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [

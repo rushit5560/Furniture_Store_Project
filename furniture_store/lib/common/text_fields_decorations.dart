@@ -25,7 +25,7 @@ InputDecoration addReviewFieldDecoration({String? hintText}) {
   return InputDecoration(
     hintText: '$hintText',
     isDense: true,
-    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Colors.grey),
     ),

@@ -7,7 +7,8 @@ import 'package:furniture_store/controllers/change_password_screen_controller/ch
 import 'package:get/get.dart';
 
 class ChangePasswordFields extends StatelessWidget {
-  final changePasswordScreenController = Get.find<ChangePasswordScreenController>();
+  final changePasswordScreenController =
+      Get.find<ChangePasswordScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,52 +30,56 @@ class ChangePasswordFields extends StatelessWidget {
 }
 
 class OldPasswordField extends StatelessWidget {
-  final changePasswordScreenController = Get.find<ChangePasswordScreenController>();
+  final changePasswordScreenController =
+      Get.find<ChangePasswordScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: changePasswordScreenController.oldPasswordFieldController,
-      validator: (value)=> FieldValidator().validatePassword(value!),
+      validator: (value) => FieldValidator().validatePassword(value!),
       decoration: formInputDecoration(hintText: 'Old Password'),
     );
   }
 }
 
 class NewPasswordField extends StatelessWidget {
-  final changePasswordScreenController = Get.find<ChangePasswordScreenController>();
+  final changePasswordScreenController =
+      Get.find<ChangePasswordScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: changePasswordScreenController.newPasswordFieldController,
-      validator: (value)=> FieldValidator().validatePassword(value!),
+      validator: (value) => FieldValidator().validatePassword(value!),
       decoration: formInputDecoration(hintText: 'New Password'),
     );
   }
 }
 
 class CNewPasswordField extends StatelessWidget {
-  final changePasswordScreenController = Get.find<ChangePasswordScreenController>();
+  final changePasswordScreenController =
+      Get.find<ChangePasswordScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: changePasswordScreenController.cNewPasswordFieldController,
-      validator: (value)=> FieldValidator().validatePassword(value!),
+      validator: (value) => FieldValidator().validatePassword(value!),
       decoration: formInputDecoration(hintText: 'Confirm New Password'),
     );
   }
 }
 
 class SubmitButton extends StatelessWidget {
-  final changePasswordScreenController = Get.find<ChangePasswordScreenController>();
+  final changePasswordScreenController =
+      Get.find<ChangePasswordScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if(changePasswordScreenController.formKey.currentState!.validate()){
+        if (changePasswordScreenController.formKey.currentState!.validate()) {
           changePasswordScreenController.getForgotPasswordData(
             "${changePasswordScreenController.oldPasswordFieldController.text.trim()}",
             "${changePasswordScreenController.newPasswordFieldController.text.trim()}",
@@ -82,14 +87,12 @@ class SubmitButton extends StatelessWidget {
           );
           cleartextFields();
         }
-
       },
       child: Container(
         width: Get.width,
         alignment: Alignment.center,
         child: Padding(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
             'Submit',
             textScaleFactor: 1.2,

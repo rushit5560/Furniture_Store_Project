@@ -1,11 +1,19 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:furniture_store/Screens/cart_screen/cart_screen.dart';
 import 'package:furniture_store/Screens/notification_screen/notification_screen.dart';
 import 'package:furniture_store/Screens/order_screen/order_screen.dart';
 import 'package:furniture_store/Screens/settings_screen/settings_screen.dart';
+import 'package:furniture_store/common/common_widgets.dart';
 import 'package:furniture_store/common/custom_color.dart';
+import 'package:furniture_store/common/field_validation.dart';
 import 'package:furniture_store/common/image_url.dart';
+import 'package:furniture_store/common/text_fields_decorations.dart';
+import 'package:furniture_store/controllers/profile_screen_controller/profile_screen_controller.dart';
+import 'package:furniture_store/models/profile_screen_model/city_model.dart';
+import 'package:furniture_store/models/profile_screen_model/country_model.dart';
+import 'package:furniture_store/models/profile_screen_model/state_model.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -22,7 +30,7 @@ PreferredSizeWidget profileScreenAppBarModule(context) {
           child: Container(
             child: Padding(
               padding: const EdgeInsets.all(3),
-              child: Icon(Icons.edit,color: CustomColor.kLightGreenColor),
+              child: Icon(Icons.edit, color: CustomColor.kLightGreenColor),
             ),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -36,7 +44,6 @@ PreferredSizeWidget profileScreenAppBarModule(context) {
 }
 
 class GreenBackgroundModule extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,7 +70,6 @@ class GreenBackgroundModule extends StatelessWidget {
 }
 
 class UserDetails extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -170,10 +176,10 @@ class UserDetails extends StatelessWidget {
                   ],
                 ),
 
-                ButtonModule(title: 'Notification',index: 0),
-                ButtonModule(title: 'My Order',index: 1),
-                ButtonModule(title: 'Cart',index: 2),
-                ButtonModule(title: 'Settings',index: 3),
+                ButtonModule(title: 'Notification', index: 0),
+                ButtonModule(title: 'My Order', index: 1),
+                ButtonModule(title: 'Cart', index: 2),
+                ButtonModule(title: 'Settings', index: 3),
               ],
             ),
           ),
@@ -181,7 +187,6 @@ class UserDetails extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class ProfileImageModule extends StatefulWidget {
@@ -190,8 +195,8 @@ class ProfileImageModule extends StatefulWidget {
   @override
   _ProfileImageModuleState createState() => _ProfileImageModuleState();
 }
-class _ProfileImageModuleState extends State<ProfileImageModule> {
 
+class _ProfileImageModuleState extends State<ProfileImageModule> {
   final imagePicker = ImagePicker();
   File? file;
 
@@ -206,13 +211,13 @@ class _ProfileImageModuleState extends State<ProfileImageModule> {
               shape: BoxShape.circle,
               image: file != null
                   ? DecorationImage(
-                image: FileImage(file!),
-                fit: BoxFit.cover,
-              )
+                      image: FileImage(file!),
+                      fit: BoxFit.cover,
+                    )
                   : DecorationImage(
-                image: AssetImage('${ImageUrl.profileImg}'),
-                fit: BoxFit.cover,
-              )),
+                      image: AssetImage('${ImageUrl.profileImg}'),
+                      fit: BoxFit.cover,
+                    )),
         ),
         Positioned(
           right: 0,
@@ -223,8 +228,8 @@ class _ProfileImageModuleState extends State<ProfileImageModule> {
             child: GestureDetector(
               onTap: () => showPicker(context),
               child: Container(
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.white),
+                decoration:
+                    BoxDecoration(shape: BoxShape.circle, color: Colors.white),
                 child: Padding(
                   padding: const EdgeInsets.all(4),
                   child: Icon(Icons.camera_alt_rounded, size: 18),
@@ -270,32 +275,31 @@ class _ProfileImageModuleState extends State<ProfileImageModule> {
               ),
             ),
           );
-        }
-    );
+        });
   }
 
   void gallery() async {
-    final image = await imagePicker.getImage(source: ImageSource.gallery);
-    if(image != null){
+    final image = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
       setState(() {
         file = File(image.path);
       });
-    } else{}
+    } else {}
   }
 
   void camera() async {
-    final image = await imagePicker.getImage(source: ImageSource.camera);
-    if(image != null){
+    final image = await imagePicker.pickImage(source: ImageSource.camera);
+    if (image != null) {
       setState(() {
         file = File(image.path);
       });
-    } else{}
+    } else {}
   }
 }
 
 class ButtonModule extends StatelessWidget {
-  String title;
-  int index;
+  final title;
+  final index;
 
   ButtonModule({required this.title, required this.index});
 
@@ -313,7 +317,6 @@ class ButtonModule extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('$title'),
-
                 Icon(Icons.arrow_forward_ios_rounded, size: 18),
               ],
             ),
@@ -324,68 +327,49 @@ class ButtonModule extends StatelessWidget {
   }
 }
 
-void navigateTo(index){
-  index == 0 ? Get.to(()=> NotificationScreen())
-             : index == 1 ? Get.to(()=> OrderScreen())
-             : index == 2 ? Get.to(()=> CartScreen())
-             : Get.to(()=> SettingsScreen());
+void navigateTo(index) {
+  index == 0
+      ? Get.to(() => NotificationScreen())
+      : index == 1
+          ? Get.to(() => OrderScreen())
+          : index == 2
+              ? Get.to(() => CartScreen())
+              : Get.to(() => SettingsScreen());
 }
-
 
 // Edit Profile modules
 editProfileDialogModule(BuildContext context) {
-  GlobalKey<FormState> formKey = GlobalKey();
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController emailIdController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  Gender gender = Gender.male;
-
+  final profileScreenController = Get.find<ProfileScreenController>();
 
   return showDialog(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder: (context, setState2){
-            return AlertDialog(
-              content: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    EditProfileTextModule(),
-                    SizedBox(height: 5),
-
-                    FullNameTextField(
-                      fullNameController: fullNameController,
-                      hintText: 'Full Name',
+          builder: (context, setState2) {
+            return Obx(
+              () => profileScreenController.isLoading.value
+                  ? CustomCircularProgressIndicator()
+                  : AlertDialog(
+                      content: Form(
+                        key: profileScreenController.formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            EditProfileTextModule(),
+                            SizedBox(height: 5),
+                            FullNameTextField(),
+                            SizedBox(height: 8),
+                            CountryDropDownModule(),
+                            SizedBox(height: 8),
+                            StateDropDownModule(),
+                            SizedBox(height: 8),
+                            CityDropDownModule(),
+                            SizedBox(height: 8),
+                            UpdateButton(),
+                          ],
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 8),
-
-                    EmailIdTextField(
-                      emailIdController: emailIdController,
-                      hintText: 'Email Id',
-                    ),
-                    SizedBox(height: 8),
-
-                    AddressTextField(
-                      addressController: addressController,
-                      hintText: 'Address',
-                    ),
-                    SizedBox(height: 8),
-
-                    GenderRadioButton(setState2: setState2, gender: gender),
-
-                    SizedBox(height: 8),
-                    UpdateButton(
-                      formKey: formKey,
-                      fullNameController: fullNameController,
-                      emailIdController: emailIdController,
-                      addressController: addressController,
-                      // gender: gender,
-                    ),
-                  ],
-                ),
-              ),
             );
           },
         );
@@ -415,188 +399,335 @@ class EditProfileTextModule extends StatelessWidget {
   }
 }
 
+// class FullNameTextField extends StatelessWidget {
+//   final fullNameController;
+//   final hintText;
+//   FullNameTextField({required this.fullNameController, required this.hintText});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextFormField(
+//       cursorColor: CustomColor.kLightGreenColor,
+//       controller: fullNameController,
+//       validator: (value){
+//         if(value!.isEmpty){
+//           return 'Field Can\'t Empty';
+//         }
+//       },
+//       decoration: InputDecoration(
+//         isDense: true,
+//         contentPadding: EdgeInsets.symmetric(vertical: 5),
+//         hintText: '$hintText',
+//         enabledBorder: UnderlineInputBorder(),
+//         focusedBorder: UnderlineInputBorder(),
+//         errorBorder: UnderlineInputBorder(),
+//         focusedErrorBorder: UnderlineInputBorder(),
+//       ),
+//     );
+//   }
+// }
+
+// class EmailIdTextField extends StatelessWidget {
+//   final emailIdController;
+//   final hintText;
+//   EmailIdTextField({required this.emailIdController, required this.hintText});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextFormField(
+//       cursorColor: CustomColor.kLightGreenColor,
+//       controller: emailIdController,
+//       validator: (value){
+//         if(value!.isEmpty){
+//           return 'Field Can\'t Empty';
+//         }
+//         else if(!value.contains('@')){
+//           return 'Enter Valid Email Id';
+//         }
+//       },
+//       decoration: InputDecoration(
+//         isDense: true,
+//         contentPadding: EdgeInsets.symmetric(vertical: 5),
+//         hintText: '$hintText',
+//         enabledBorder: UnderlineInputBorder(),
+//         focusedBorder: UnderlineInputBorder(),
+//         errorBorder: UnderlineInputBorder(),
+//         focusedErrorBorder: UnderlineInputBorder(),
+//       ),
+//     );
+//   }
+// }
+
+// class AddressTextField extends StatelessWidget {
+//   final addressController;
+//   final hintText;
+//   AddressTextField({required this.addressController, required this.hintText});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextFormField(
+//       cursorColor: CustomColor.kLightGreenColor,
+//       controller: addressController,
+//       validator: (value){
+//         if(value!.isEmpty){
+//           return 'Field Can\'t Empty';
+//         }
+//       },
+//       decoration: InputDecoration(
+//         isDense: true,
+//         contentPadding: EdgeInsets.symmetric(vertical: 5),
+//         hintText: '$hintText',
+//         enabledBorder: UnderlineInputBorder(),
+//         focusedBorder: UnderlineInputBorder(),
+//         errorBorder: UnderlineInputBorder(),
+//         focusedErrorBorder: UnderlineInputBorder(),
+//       ),
+//     );
+//   }
+// }
+
+// enum Gender {male, female}
+
+// class GenderRadioButton extends StatefulWidget {
+//   var setState2;
+//   Gender gender;
+//   GenderRadioButton({
+//     required this.setState2,
+//     required this.gender,
+// });
+//
+//   @override
+//   _GenderRadioButtonState createState() => _GenderRadioButtonState();
+// }
+// class _GenderRadioButtonState extends State<GenderRadioButton> {
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       children: [
+//         Container(
+//           child: Row(
+//             children: [
+//               Radio(
+//                 value: Gender.male,
+//                 groupValue: widget.gender,
+//                 onChanged: (Gender? val){
+//                   widget.setState2(() {
+//                     widget.gender = val!;
+//                     print(widget.gender);
+//                   });
+//                 },
+//               ),
+//               SizedBox(width: 5),
+//               Text(
+//                 'Male',
+//                 style: TextStyle(
+//                     color: Colors.black
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//         SizedBox(width: 10),
+//         Container(
+//           child: Row(
+//             children: [
+//               Radio(
+//                 value: Gender.female,
+//                 groupValue: widget.gender,
+//                 onChanged: (Gender? val){
+//                   widget.setState2(() {
+//                     widget.gender = val!;
+//                     print(widget.gender);
+//
+//                   });
+//                 },
+//               ),
+//               SizedBox(width: 5),
+//               Text(
+//                 'Female',
+//                 style: TextStyle(
+//                     color: Colors.black
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
 class FullNameTextField extends StatelessWidget {
-  TextEditingController fullNameController;
-  String hintText;
-  FullNameTextField({required this.fullNameController, required this.hintText});
+  final profileScreenController = Get.find<ProfileScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      cursorColor: CustomColor.kLightGreenColor,
-      controller: fullNameController,
-      validator: (value){
-        if(value!.isEmpty){
-          return 'Field Can\'t Empty';
-        }
-      },
-      decoration: InputDecoration(
-        isDense: true,
-        contentPadding: EdgeInsets.symmetric(vertical: 5),
-        hintText: '$hintText',
-        enabledBorder: UnderlineInputBorder(),
-        focusedBorder: UnderlineInputBorder(),
-        errorBorder: UnderlineInputBorder(),
-        focusedErrorBorder: UnderlineInputBorder(),
-      ),
+      controller: profileScreenController.fullNameController,
+      validator: (value) => FieldValidator().validateFullName(value!),
+      decoration: addReviewFieldDecoration(hintText: 'UserName'),
     );
   }
 }
 
-class EmailIdTextField extends StatelessWidget {
-  TextEditingController emailIdController;
-  String hintText;
-  EmailIdTextField({required this.emailIdController, required this.hintText});
+class CountryDropDownModule extends StatelessWidget {
+  final profileScreenController = Get.find<ProfileScreenController>();
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      cursorColor: CustomColor.kLightGreenColor,
-      controller: emailIdController,
-      validator: (value){
-        if(value!.isEmpty){
-          return 'Field Can\'t Empty';
-        }
-        else if(!value.contains('@')){
-          return 'Enter Valid Email Id';
-        }
-      },
-      decoration: InputDecoration(
-        isDense: true,
-        contentPadding: EdgeInsets.symmetric(vertical: 5),
-        hintText: '$hintText',
-        enabledBorder: UnderlineInputBorder(),
-        focusedBorder: UnderlineInputBorder(),
-        errorBorder: UnderlineInputBorder(),
-        focusedErrorBorder: UnderlineInputBorder(),
-      ),
-    );
-  }
-}
-
-class AddressTextField extends StatelessWidget {
-  TextEditingController addressController;
-  String hintText;
-  AddressTextField({required this.addressController, required this.hintText});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      cursorColor: CustomColor.kLightGreenColor,
-      controller: addressController,
-      validator: (value){
-        if(value!.isEmpty){
-          return 'Field Can\'t Empty';
-        }
-      },
-      decoration: InputDecoration(
-        isDense: true,
-        contentPadding: EdgeInsets.symmetric(vertical: 5),
-        hintText: '$hintText',
-        enabledBorder: UnderlineInputBorder(),
-        focusedBorder: UnderlineInputBorder(),
-        errorBorder: UnderlineInputBorder(),
-        focusedErrorBorder: UnderlineInputBorder(),
-      ),
-    );
-  }
-}
-
-enum Gender {male, female}
-
-class GenderRadioButton extends StatefulWidget {
-  var setState2;
-  Gender gender;
-  GenderRadioButton({
-    required this.setState2,
-    required this.gender,
-});
-
-  @override
-  _GenderRadioButtonState createState() => _GenderRadioButtonState();
-}
-class _GenderRadioButtonState extends State<GenderRadioButton> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          child: Row(
-            children: [
-              Radio(
-                value: Gender.male,
-                groupValue: widget.gender,
-                onChanged: (Gender? val){
-                  widget.setState2(() {
-                    widget.gender = val!;
-                    print(widget.gender);
-                  });
-                },
-              ),
-              SizedBox(width: 5),
-              Text(
-                'Male',
-                style: TextStyle(
-                    color: Colors.black
-                ),
-              ),
-            ],
-          ),
+    return Obx(
+      () => Container(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        width: Get.width,
+        height: 43,
+        decoration: BoxDecoration(
+          // borderRadius: BorderRadius.circular(35),
+          border: Border.all(color: Colors.grey),
         ),
-        SizedBox(width: 10),
-        Container(
-          child: Row(
-            children: [
-              Radio(
-                value: Gender.female,
-                groupValue: widget.gender,
-                onChanged: (Gender? val){
-                  widget.setState2(() {
-                    widget.gender = val!;
-                    print(widget.gender);
-
-                  });
-                },
-              ),
-              SizedBox(width: 5),
-              Text(
-                'Female',
-                style: TextStyle(
-                    color: Colors.black
-                ),
-              ),
-            ],
+        child: DropdownButton<Datum>(
+          value: profileScreenController.countryDropDownValue,
+          icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+          style: TextStyle(color: Colors.grey),
+          isExpanded: true,
+          underline: Container(
+            height: 1,
+            color: Colors.white,
           ),
+          onChanged: (newValue) {
+            profileScreenController.countryDropDownValue!.name = newValue!.name;
+            profileScreenController.countryDropDownValue!.id = newValue.id;
+            print(
+                "countryDropDownValue : ${profileScreenController.countryDropDownValue!.name}");
+            print("countryDropDownValue ID : ${newValue.id}");
+            profileScreenController.getStateData(newValue.id);
+          },
+          items: profileScreenController.countryLists
+              .map<DropdownMenuItem<Datum>>((Datum value) {
+            return DropdownMenuItem<Datum>(
+              value: value,
+              child: Text(value.name),
+            );
+          }).toList(),
         ),
-      ],
+      ),
     );
   }
 }
 
+class StateDropDownModule extends StatelessWidget {
+  final profileScreenController = Get.find<ProfileScreenController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Container(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        width: Get.width,
+        height: 43,
+        decoration: BoxDecoration(
+          // borderRadius: BorderRadius.circular(35),
+          border: Border.all(color: Colors.grey),
+        ),
+        child: DropdownButton<DatumState>(
+          value: profileScreenController.stateDropDownValue,
+          icon:
+              const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+          style: const TextStyle(color: Colors.grey),
+          isExpanded: true,
+          underline: Container(
+            height: 1,
+            color: Colors.white,
+          ),
+          onChanged: (newValue) {
+            profileScreenController.stateDropDownValue!.name = newValue!.name;
+            profileScreenController.stateDropDownValue!.id = newValue.id;
+            print(
+                "stateDropDownValue : ${profileScreenController.stateDropDownValue}");
+            print('newValue.name : ${newValue.name}');
+            profileScreenController.getCityData(newValue.id);
+            profileScreenController.loading();
+          },
+          items: profileScreenController.stateLists
+              .map<DropdownMenuItem<DatumState>>((DatumState value) {
+            return DropdownMenuItem<DatumState>(
+              value: value,
+              child: Text(value.name),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class CityDropDownModule extends StatelessWidget {
+  final profileScreenController = Get.find<ProfileScreenController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Container(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        width: Get.width,
+        height: 43,
+        decoration: BoxDecoration(
+          // borderRadius: BorderRadius.circular(35),
+          border: Border.all(color: Colors.grey),
+        ),
+        child: DropdownButton<DatumCity>(
+          value: profileScreenController.cityDropDownValue,
+          icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+          style: TextStyle(color: Colors.grey),
+          isExpanded: true,
+          underline: Container(
+            height: 1,
+            color: Colors.white,
+          ),
+          onChanged: (newValue) {
+            profileScreenController.cityDropDownValue!.name = newValue!.name;
+            profileScreenController.cityDropDownValue!.id = newValue.id;
+            print(
+                "cityDropDownValue : ${profileScreenController.cityDropDownValue}");
+            print('newValue.name : ${newValue.name}');
+            profileScreenController.loading();
+          },
+          items: profileScreenController.cityLists
+              .map<DropdownMenuItem<DatumCity>>((DatumCity value) {
+            return DropdownMenuItem<DatumCity>(
+              value: value,
+              child: Text(value.name),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
 
 class UpdateButton extends StatelessWidget {
-  GlobalKey<FormState> formKey;
-  TextEditingController fullNameController, emailIdController, addressController;
-  // var gender;
-  UpdateButton({
-    required this.formKey,
-    required this.fullNameController,
-    required this.emailIdController,
-    required this.addressController,
-    // required this.gender,
-});
+  final profileScreenController = Get.find<ProfileScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if(formKey.currentState!.validate()){
-          print('${fullNameController.text}');
-          print('${emailIdController.text}');
-          print('${addressController.text}');
-          // print('$gender');
+        if (profileScreenController.formKey.currentState!.validate()) {
+          if (profileScreenController.countryDropDownValue!.id == 0) {
+            Fluttertoast.showToast(
+                msg: 'Please Select Country', toastLength: Toast.LENGTH_LONG);
+          } else if (profileScreenController.stateDropDownValue!.id == 0) {
+            Fluttertoast.showToast(
+                msg: 'Please Select State', toastLength: Toast.LENGTH_LONG);
+          } else if (profileScreenController.cityDropDownValue!.id == 0) {
+            Fluttertoast.showToast(
+                msg: 'Please Select City', toastLength: Toast.LENGTH_LONG);
+          } else {
+            profileScreenController.updateProfileData(
+              "${profileScreenController.fullNameController.text.trim()}",
+            );
+          }
         }
       },
       child: Container(

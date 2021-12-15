@@ -159,7 +159,7 @@ class ProductDetails extends StatelessWidget {
             isScrollable: true,
             tabs: [
               Tab(text: 'Description'),
-              Tab(text: 'Review'),
+              Tab(text: 'Reviews'),
               Tab(text: 'Add Review')
             ],
           ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/Screens/category_screen/category_screen.dart';
 import 'package:furniture_store/Screens/contact_us_screen/contact_us_screen.dart';
+import 'package:furniture_store/Screens/notification_screen/notification_screen.dart';
+import 'package:furniture_store/Screens/profile_screen/profile_screen.dart';
 import 'package:furniture_store/Screens/setting_screen/setting_screen.dart';
 import 'package:furniture_store/Screens/sign_in_screen/sign_in_screen.dart';
 import 'package:furniture_store/common/custom_color.dart';
@@ -8,7 +10,6 @@ import 'package:furniture_store/common/image_url.dart';
 import 'package:get/get.dart';
 
 class CustomDrawerScreen extends StatelessWidget {
-  // const CustomDrawerView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,6 @@ class CustomDrawerScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -86,7 +86,7 @@ class CustomDrawerScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: GestureDetector(
-        onTap: () {print('Home');},
+        onTap: () => Get.back(),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -127,7 +127,7 @@ class CustomDrawerScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: GestureDetector(
-        onTap: () {print('Notification');},
+        onTap: () => Get.to(()=> NotificationScreen()),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -146,7 +146,7 @@ class CustomDrawerScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: GestureDetector(
-        onTap: () {print('Profile');},
+        onTap: () => Get.to(()=> ProfileScreen()),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [

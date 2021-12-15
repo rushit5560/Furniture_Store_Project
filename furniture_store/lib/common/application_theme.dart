@@ -4,6 +4,8 @@ import 'custom_color.dart';
 ThemeData lightTheme() {
   return ThemeData.light().copyWith(
     primaryColor: CustomColor.kLightGreenColor,
+    appBarTheme: AppBarTheme(color: CustomColor.kLightGreenColor),
+
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedIconTheme: IconThemeData(color: CustomColor.kLightGreenColor),
       unselectedIconTheme: IconThemeData(color: Colors.black),
